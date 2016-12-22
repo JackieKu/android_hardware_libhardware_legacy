@@ -1126,6 +1126,17 @@ void wifi_close_supplicant_connection()
 
 int wifi_command(const char *command, char *reply, size_t *reply_len)
 {
+    char *country;
+    if ((country = strstr(command, "DRIVER COUNTRY "))) {
+        country += sizeof("DRIVER COUNTRY ") - 1;
+
+        ALOGD("App layer set country to %s", country);
+        if (!strcmp(country, "TW")) {
+            country[0] = 'U';
+            country[1] = 'S';
+        }
+    }
+
     return wifi_send_command(command, reply, reply_len);
 }
 
